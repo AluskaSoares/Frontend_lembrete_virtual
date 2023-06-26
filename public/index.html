@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recuperação FrontEnd_Lembrete Virtual</title>
+  <link rel="stylesheet" href="stilo.css">
+</head>
+<body>
+  <div class="centralizar">
+    <h1>Pró-Memory 💡</h1>
+
+    <form id="formulario">
+      <label for="texto">Lembrete:</label>
+      <input type="text" id="texto" name="texto" required>
+
+      <label for="prioridade">Prioridade:</label>
+      <select id="prioridade" name="prioridade">
+        <option value="alta">Alta</option>
+        <option value="media">Média</option>
+        <option value="baixa">Baixa</option>
+      </select>
+
+      <label for="duracao">Duração:</label>
+      <select id="duracao" name="duracao">
+        <option value="dia">Um dia</option>
+        <option value="semana">Uma semana</option>
+        <option value="mes">Um mês</option>
+      </select>
+
+      <button type="button" onclick="adicionarTexto()">Enviar</button>
+    </form>
+
+    <div id="textos"></div>
+  </div>
+
+  <script>
+    let mensagemEditada = null; // Variável para armazenar a mensagem sendo editada
+
+    function adicionarTexto() {
+      const texto = document.getElementById("texto").value.trim();
+      if (texto === "") {
+        return;
+      }
+
+      if (mensagemEditada) {
+        // Se uma mensagem estiver sendo editada, atualiza seu conteúdo
+        mensagemEditada.firstChild.textContent = texto;
+        mensagemEditada = null; // Limpa a variável de mensagem editada
+        document.getElementById("texto").value = ""; // Limpa o campo de texto
+        return;
+      }
+
+      const divTexto = document.createElement("div");
+      const mensagem = document.createElement("span");
+      mensagem.textContent = texto;
+      divTexto.appendChild(mensagem);
+
+      const botaoExcluir = document.createElement("button");
+      botaoExcluir.textContent = "Excluir";
+      botaoExcluir.addEventListener("click", function() {
+        divTexto.remove();
+      });
+
+      const botaoEditar = document.createElement("button");
+      botaoEditar.textContent = "Editar";
+      botaoEditar.addEventListener("click", function() {
+        mensagemEditada = divTexto; // Armazena a referência da mensagem a ser editada
+        document.getElementById("texto").value = mensagem.firstChild.textContent; // Preenche o campo de texto com o conteúdo da mensagem
+      });
+
+      divTexto.appendChild(botaoExcluir);
+      divTexto.appendChild(botaoEditar);
+
+      document.getElementById("textos").appendChild(divTexto);
+
+      document.getElementById("texto").value = "";
+
+      const prioridade = document.getElementById("prioridade").value;
+      const duracao = document.getElementById("duracao").value;
+      console.log("Prioridade:", prioridade);
+      console.log("Duração:", duracao);
+    }
+  </script>
+</body>
+</html>
